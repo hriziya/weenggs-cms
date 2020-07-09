@@ -7,14 +7,20 @@
     "start": "next start"
   },
   "dependencies": {
-    "@chakra-ui/core": "^1.0.0-next.4",
-    "@chakra-ui/system": "^1.0.0-next.4",
-    "@chakra-ui/theme": "^1.0.0-next.4",
-    "next": "latest",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "@chakra-ui/core": "0.8.0",
+    "@chakra-ui/system": "1.0.0-next.4",
+    "@chakra-ui/theme": "1.0.0-next.4",
+    "@emotion/react": "11.0.0-next.13",
+    "@emotion/styled": "11.0.0-next.13",
+    "@prisma/client": "2.2.0",
+    "next": "9.4.4",
+    "react": "16.13.1",
+    "react-dom": "16.13.1"
   },
   "license": "ISC",
   "keywords": [],
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "@prisma/cli": "2.2.0"
+  }
 }

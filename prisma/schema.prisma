@@ -1,0 +1,813 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model cmp_accounts {
+  account_id     Int       @default(autoincrement()) @id
+  account_name   String?
+  account_number String?
+  account_type   String?
+  bank_address   String?
+  bank_ifsc      String?
+  bank_name      String?
+  bank_swift     String?
+  company_id     Int?
+  contact_no     String?
+  date_added     DateTime?
+  is_deleted     Boolean?  @default(false)
+}
+
+model cmp_admin {
+  admin_email    String?
+  admin_id       Int       @default(autoincrement()) @id
+  admin_pass     String?
+  company_id     Int?
+  date_added     DateTime  @default(now())
+  date_modified  DateTime  @default(now())
+  first_name     String?
+  is_deleted     Int?
+  last_logged_in DateTime?
+  last_name      String?
+  notes          String?
+}
+
+model cmp_announcement {
+  announcement_id     Int       @default(autoincrement()) @id
+  announcement_status Boolean?  @default(true)
+  announcement_text   String?
+  announcement_type   String?
+  company_id          Int?
+  date_added          DateTime?
+  date_modified       DateTime?
+  employee_id         String?
+  is_deleted          Boolean?  @default(false)
+}
+
+model cmp_currencies {
+  currency_id   Int     @default(autoincrement()) @id
+  currency_name String?
+}
+
+model cmp_holidays {
+  company_id    Int?
+  holiday_date  DateTime?
+  holiday_id    Int       @default(autoincrement()) @id
+  holiday_notes String?
+  holiday_type  String?
+}
+
+model cmp_invoices {
+  client_id     Int?
+  company_id    Int?
+  currency_name String?
+  date_added    DateTime?
+  date_modified DateTime?
+  invoice_date  DateTime?
+  invoice_id    Int       @default(autoincrement()) @id
+  invoice_no    String?
+  is_deleted    Boolean?  @default(false)
+  is_paid       Boolean?  @default(false)
+  taxes         String?
+}
+
+model cmp_invoice_details {
+  company_id        Int?
+  date_added        DateTime?
+  date_modified     DateTime?
+  description       String?
+  invoice_detail_id Int       @default(autoincrement()) @id
+  invoice_id        Int?
+  is_deleted        Boolean?  @default(false)
+  original_amount   Float?
+  qty               Float?
+  qty_int           Int?
+  rate              Float?    @default(0.00)
+  tax_amount        Float?
+  tax_id            String?
+  tax_name_values   String?
+  total_amount      Float?
+  t_n               String?
+  t_v               String?
+}
+
+model cmp_packages {
+  date_added   DateTime?
+  package_id   Int       @id
+  package_name String?
+}
+
+model cmp_taxes {
+  company_id    Int?
+  date_added    DateTime?
+  date_modified DateTime?
+  is_deleted    Boolean?  @default(false)
+  tax_id        Int       @default(autoincrement()) @id
+  tax_name      String?
+  tax_value     String?
+}
+
+model cmp_transactions {
+  added_on   DateTime?
+  client_id  Int?
+  company_id Int?
+  project_id Int?
+  txn_date   DateTime?
+  txn_id     Int       @default(autoincrement()) @id
+  txn_total  String?
+}
+
+model cmp_transaction_details {
+  added_on           DateTime?
+  employee_id        Int?
+  percentage         Int?
+  percentage_details Float?
+  txn_detail_id      Int       @default(autoincrement()) @id
+  txn_id             Int?
+}
+
+model emp_attendence {
+  attendence_id       Int       @default(autoincrement()) @id
+  company_id          Int?
+  date_added          DateTime?
+  date_punch          DateTime? @unique
+  employee_biotime_id Int?
+  employee_id         Int?
+  punch_mode          String?
+}
+
+model emp_checkins {
+  added_on           DateTime? @default(now())
+  checkin_id         Int       @default(autoincrement()) @id
+  checkin_time       DateTime?
+  checkout_time      DateTime?
+  company_id         Int?      @default(5)
+  employee_id        Int?
+  extra_mins         Int?
+  notes              String?
+  overtime_notes     String?
+  total_time_in_mins Int?
+}
+
+model emp_employees {
+  color_1                       String?
+  color_2                       String?
+  company_id                    Int?
+  date_added                    DateTime?
+  date_modified                 DateTime?
+  eligible_free_leave_after     DateTime?
+  eligible_free_leave_text      String?
+  employee_aadhar_number        String?
+  employee_address              String?
+  employee_biotime_id           Int?
+  employee_code                 String?
+  employee_date_join            DateTime?
+  employee_date_leave           DateTime?
+  employee_designation          String?
+  employee_email                String?
+  employee_id                   Int                           @default(autoincrement()) @id
+  employee_name                 String?
+  employee_pan_number           String?
+  employee_passport_number      String?
+  employee_password             String?
+  employee_personal_email       String?
+  employee_phone                String?
+  employee_photo                String?
+  employee_sign                 String?
+  employee_status               Int?
+  native_place_address          String?
+  native_place_contact_name     String?
+  native_place_contact_phone    String?
+  native_place_relative_name_1  String?
+  native_place_relative_name_2  String?
+  native_place_relative_phone_1 String?
+  native_place_relative_phone_2 String?
+  prev_employment_company       String?
+  prev_employment_contact_name  String?
+  prev_employment_contact_phone String?
+  reference_by_contact_name     String?
+  reference_by_contact_phone    String?
+  total_exp_in_months           Int?
+  hubstaff_activities           hubstaff_activities[]
+  hubstaff_crons                hubstaff_crons[]
+  hubstaff_daily_activity_org   hubstaff_daily_activity_org[]
+  hubstaff_daily_activity_prj   hubstaff_daily_activity_prj[]
+  hubstaff_organizations        hubstaff_organizations[]
+  hubstaff_projects             hubstaff_projects[]
+  hubstaff_screenshots          hubstaff_screenshots[]
+  hubstaff_tokens               hubstaff_tokens[]
+  hubstaff_tokens_admin         hubstaff_tokens_admin[]
+  hubstaff_users                hubstaff_users[]
+}
+
+model emp_leaves {
+  company_id          Int?
+  date_added          DateTime?
+  days_count          Float?
+  deductable          Int?
+  employee_id         Int?
+  is_approve          Int?
+  leave_approval_type Int?
+  leave_end           DateTime?
+  leave_id            Int       @default(autoincrement()) @id
+  leave_reason        String?
+  leave_start         DateTime?
+  leave_type          String?
+  notes               String?
+}
+
+model emp_salary {
+  company_id     Int?
+  date_added     DateTime?
+  interal_notes  String?
+  salary_id      Int       @default(autoincrement()) @id
+  salary_month   Int?
+  salary_notes   String?
+  salary_paid_on DateTime?
+  salary_total   Int?
+  salary_year    Int?
+  working_days   Int?
+}
+
+model emp_salary_details {
+  basic_per_day        Float?
+  basic_salary         Float?
+  company_id           Int?
+  conveyance_allowance Float?
+  date_added           DateTime?
+  employee_id          Int?
+  emp_notes            String?
+  free_leaves          Int?
+  house_rent_allowance Float?
+  interal_notes        String?
+  late_w_days          Int?
+  leave_count          Float?
+  leave_deduction      Float?
+  leave_incentive      Float?
+  medical_allowance    Float?
+  net_salary           Float?
+  paid_salary          Float?
+  payable_days         Int?
+  professional_tax     Float?
+  salary_date          DateTime?
+  salary_detail_id     Int       @default(autoincrement()) @id
+  salary_id            Int?
+  salary_month         Int?
+  salary_year          Int?
+  security_deposit     Float?
+  tds_income_tax       Float?
+  total_days           Int?
+  total_deduction      Float?
+  total_earning        Float?
+  working_days         Int?
+}
+
+model emp_salary_increments {
+  company_id   Int?
+  employee_id  Int?
+  emp_salary   Float?
+  increment_id Int     @default(autoincrement()) @id
+  inc_amount   Float?
+  inc_month    Int?
+  inc_notes    String?
+  inc_year     Int?
+}
+
+model hubstaff_activities {
+  billable               Boolean?
+  client                 String?
+  client_invoiced        Boolean?
+  company_id             Int
+  created_at             String?
+  date                   DateTime?
+  employee_id            Int
+  id                     Int                    @id
+  immutable              String?
+  keyboard               Int?
+  mouse                  Int?
+  organization_id        Int
+  overall                Int?
+  paid                   Boolean?
+  project_id             Int?
+  starts_at              String?
+  task_id                Int?
+  team_invoiced          Boolean?
+  time_slot              String?
+  time_type              String?
+  tracked                Int?
+  updated_at             String?
+  user_id                Int
+  tbl_companies          tbl_companies          @relation(fields: [company_id], references: [company_id])
+  emp_employees          emp_employees          @relation(fields: [employee_id], references: [employee_id])
+  hubstaff_organizations hubstaff_organizations @relation(fields: [organization_id], references: [id])
+  hubstaff_projects      hubstaff_projects?     @relation(fields: [project_id], references: [id])
+  hubstaff_users         hubstaff_users         @relation(fields: [user_id], references: [id])
+
+  @@index([company_id], name: "company_id")
+  @@index([employee_id], name: "employee_id")
+  @@index([organization_id], name: "organization_id")
+  @@index([project_id], name: "project_id")
+  @@index([user_id], name: "user_id")
+}
+
+model hubstaff_crons {
+  company_id     Int?
+  cron_date      DateTime?
+  cron_id        Int            @default(autoincrement()) @id
+  cron_output    String?
+  cron_status    String         @default("pending")
+  date_added     DateTime       @default(now())
+  date_modified  DateTime       @default(now())
+  employee_id    Int?
+  user_id        Int
+  tbl_companies  tbl_companies? @relation(fields: [company_id], references: [company_id])
+  emp_employees  emp_employees? @relation(fields: [employee_id], references: [employee_id])
+  hubstaff_users hubstaff_users @relation(fields: [user_id], references: [id])
+
+  @@index([company_id], name: "company_id")
+  @@index([user_id], name: "user_id")
+  @@unique([employee_id, cron_date], name: "employee_id")
+}
+
+model hubstaff_daily_activity_org {
+  billable               Int?
+  company_id             Int
+  created_at             String?
+  date                   DateTime?
+  employee_id            Int
+  id                     Int                    @id
+  idle                   Int?
+  keyboard               Int?
+  manual                 Int?
+  mouse                  Int?
+  organization_id        Int
+  overall                Int?
+  project_id             Int?
+  resumed                Int?
+  task_id                Int?
+  tracked                Int?
+  updated_at             String?
+  user_id                Int?
+  tbl_companies          tbl_companies          @relation(fields: [company_id], references: [company_id])
+  emp_employees          emp_employees          @relation(fields: [employee_id], references: [employee_id])
+  hubstaff_organizations hubstaff_organizations @relation(fields: [organization_id], references: [id])
+  hubstaff_projects      hubstaff_projects?     @relation(fields: [project_id], references: [id])
+  hubstaff_users         hubstaff_users?        @relation(fields: [user_id], references: [id])
+
+  @@index([company_id], name: "company_id")
+  @@index([employee_id], name: "employee_id")
+  @@index([organization_id], name: "organization_id")
+  @@index([project_id], name: "project_id")
+  @@index([user_id], name: "user_id")
+}
+
+model hubstaff_daily_activity_prj {
+  billable               Int?
+  company_id             Int
+  created_at             String?
+  date                   DateTime?
+  employee_id            Int
+  id                     Int                    @id
+  idle                   Int?
+  keyboard               Int?
+  manual                 Int?
+  mouse                  Int?
+  organization_id        Int
+  overall                Int?
+  project_id             Int?
+  resumed                Int?
+  task_id                Int?
+  tracked                Int?
+  updated_at             String?
+  user_id                Int?
+  tbl_companies          tbl_companies          @relation(fields: [company_id], references: [company_id])
+  emp_employees          emp_employees          @relation(fields: [employee_id], references: [employee_id])
+  hubstaff_organizations hubstaff_organizations @relation(fields: [organization_id], references: [id])
+  hubstaff_projects      hubstaff_projects?     @relation(fields: [project_id], references: [id])
+  hubstaff_users         hubstaff_users?        @relation(fields: [user_id], references: [id])
+
+  @@index([company_id], name: "company_id")
+  @@index([employee_id], name: "employee_id")
+  @@index([organization_id], name: "organization_id")
+  @@index([project_id], name: "project_id")
+  @@index([user_id], name: "user_id")
+}
+
+model hubstaff_organizations {
+  company_id                  Int
+  created_at                  String?
+  employee_id                 Int
+  id                          Int                           @id
+  metadata                    String?
+  name                        String?
+  status                      String?
+  updated_at                  String?
+  user_id                     Int
+  tbl_companies               tbl_companies                 @relation(fields: [company_id], references: [company_id])
+  emp_employees               emp_employees                 @relation(fields: [employee_id], references: [employee_id])
+  hubstaff_users              hubstaff_users                @relation(fields: [user_id], references: [id])
+  hubstaff_activities         hubstaff_activities[]
+  hubstaff_daily_activity_org hubstaff_daily_activity_org[]
+  hubstaff_daily_activity_prj hubstaff_daily_activity_prj[]
+  hubstaff_projects           hubstaff_projects[]
+  hubstaff_screenshots        hubstaff_screenshots[]
+
+  @@index([company_id], name: "company_id")
+  @@index([employee_id], name: "employee_id")
+  @@index([user_id], name: "user_id")
+}
+
+model hubstaff_projects {
+  billable                    Int?
+  company_id                  Int
+  created_at                  String?
+  employee_id                 Int
+  id                          Int                           @id
+  metadata                    String?
+  name                        String?
+  organization_id             Int
+  status                      String?
+  updated_at                  String?
+  user_id                     Int
+  tbl_companies               tbl_companies                 @relation(fields: [company_id], references: [company_id])
+  emp_employees               emp_employees                 @relation(fields: [employee_id], references: [employee_id])
+  hubstaff_organizations      hubstaff_organizations        @relation(fields: [organization_id], references: [id])
+  hubstaff_users              hubstaff_users                @relation(fields: [user_id], references: [id])
+  hubstaff_activities         hubstaff_activities[]
+  hubstaff_daily_activity_org hubstaff_daily_activity_org[]
+  hubstaff_daily_activity_prj hubstaff_daily_activity_prj[]
+  hubstaff_screenshots        hubstaff_screenshots[]
+
+  @@index([company_id], name: "company_id")
+  @@index([employee_id], name: "employee_id")
+  @@index([organization_id], name: "organization_id")
+  @@index([user_id], name: "user_id")
+}
+
+model hubstaff_screenshots {
+  company_id             Int
+  created_at             String?
+  date                   DateTime?
+  employee_id            Int
+  full_url               String?
+  height                 Int?
+  id                     Int                    @id
+  offset_x               Int?
+  offset_y               Int?
+  organization_id        Int
+  project_id             Int?
+  recorded_at            String?
+  screen                 Int?
+  thumb_url              String?
+  time_slot              String?
+  updated_at             String?
+  user_id                Int?
+  width                  Int?
+  tbl_companies          tbl_companies          @relation(fields: [company_id], references: [company_id])
+  emp_employees          emp_employees          @relation(fields: [employee_id], references: [employee_id])
+  hubstaff_organizations hubstaff_organizations @relation(fields: [organization_id], references: [id])
+  hubstaff_projects      hubstaff_projects?     @relation(fields: [project_id], references: [id])
+  hubstaff_users         hubstaff_users?        @relation(fields: [user_id], references: [id])
+
+  @@index([company_id], name: "company_id")
+  @@index([employee_id], name: "employee_id")
+  @@index([organization_id], name: "organization_id")
+  @@index([project_id], name: "project_id")
+  @@index([user_id], name: "user_id")
+}
+
+model hubstaff_tokens {
+  access_token   String?
+  company_id     Int
+  employee_id    Int           @id
+  expires_in     Int?
+  personal_token String
+  refresh_token  String?
+  status         String        @default("pending")
+  token_type     String?
+  updated_on     DateTime      @default(now())
+  tbl_companies  tbl_companies @relation(fields: [company_id], references: [company_id])
+  emp_employees  emp_employees @relation(fields: [employee_id], references: [employee_id])
+
+  @@index([company_id], name: "company_id")
+}
+
+model hubstaff_tokens_admin {
+  company_id    Int           @unique
+  employee_id   Int           @id
+  tbl_companies tbl_companies @relation(fields: [company_id], references: [company_id])
+  emp_employees emp_employees @relation(fields: [employee_id], references: [employee_id])
+}
+
+model hubstaff_users {
+  company_id                  Int
+  created_at                  String?
+  email                       String?
+  employee_id                 Int
+  id                          Int                           @id
+  name                        String?
+  status                      String?
+  time_zone                   String?
+  updated_at                  String?
+  tbl_companies               tbl_companies                 @relation(fields: [company_id], references: [company_id])
+  emp_employees               emp_employees                 @relation(fields: [employee_id], references: [employee_id])
+  hubstaff_activities         hubstaff_activities[]
+  hubstaff_crons              hubstaff_crons[]
+  hubstaff_daily_activity_org hubstaff_daily_activity_org[]
+  hubstaff_daily_activity_prj hubstaff_daily_activity_prj[]
+  hubstaff_organizations      hubstaff_organizations[]
+  hubstaff_projects           hubstaff_projects[]
+  hubstaff_screenshots        hubstaff_screenshots[]
+
+  @@index([company_id], name: "company_id")
+  @@index([employee_id], name: "employee_id")
+}
+
+model kesari_categories {
+  added_on      DateTime?
+  category_id   Int       @default(autoincrement()) @id
+  category_name String?
+  is_deleted    Int?      @default(0)
+}
+
+model kesari_colors {
+  added_on   DateTime?
+  color_code String?
+  color_id   Int       @default(autoincrement()) @id
+  color_name String?
+  is_deleted Int?      @default(0)
+}
+
+model kesari_designs {
+  added_on        DateTime?
+  category_id     Int?
+  color_id        String?
+  description     String?
+  design_id       Int                             @default(autoincrement()) @id
+  design_image    String?
+  design_name     String?
+  is_deleted      Int?                            @default(0)
+  is_private      Int?
+  is_private_type kesari_designs_is_private_type?
+  status          kesari_designs_status?
+  sub_category_id Int?
+}
+
+model kesari_design_images {
+  added_on        DateTime?
+  design_id       Int?
+  design_image    String?
+  design_image_id Int       @default(autoincrement()) @id
+  is_deleted      Int?      @default(0)
+}
+
+model kesari_design_views {
+  added_on       DateTime?
+  design_id      Int?
+  design_view_id Int                              @default(autoincrement()) @id
+  entity_id      Int?
+  entity_type    kesari_design_views_entity_type?
+  is_deleted     Int?                             @default(0)
+}
+
+model kesari_favourite_designs {
+  added_on            DateTime?
+  design_image_id     Int?
+  favourite_design_id Int       @default(autoincrement()) @id
+  is_deleted          Int?      @default(0)
+  user_id             Int?
+}
+
+model kesari_notifications {
+  added_on          DateTime?
+  is_deleted        Int?      @default(0)
+  notification_id   Int       @default(autoincrement()) @id
+  notification_text String?
+  notification_type String?
+  order_id          Int?
+  user_id           Int?
+}
+
+model kesari_orders {
+  added_on     DateTime?
+  design_id    Int?
+  is_deleted   Int?                        @default(0)
+  notes        String?
+  order_code   String?
+  order_id     Int                         @default(autoincrement()) @id
+  order_status kesari_orders_order_status?
+  quantity     Int?
+  tracking_id  String?
+  user_id      Int?
+}
+
+model kesari_order_reviews {
+  added_on        DateTime?
+  is_deleted      Int?      @default(0)
+  order_id        Int?
+  order_review_id Int       @default(autoincrement()) @id
+  rating          Float?
+  review          String?
+  user_id         Int?
+}
+
+model kesari_sub_categories {
+  added_on          DateTime?
+  category_id       Int?
+  is_deleted        Int?      @default(0)
+  sub_category_id   Int       @default(autoincrement()) @id
+  sub_category_name String?
+}
+
+model kesari_users {
+  added_on     DateTime?
+  device_token String?
+  device_type  Int?
+  first_name   String?
+  is_deleted   Int?                    @default(0)
+  last_name    String?
+  mobile_no    String?
+  pin_code     String?
+  profile_pic  String?
+  user_id      Int                     @default(autoincrement()) @id
+  user_type    kesari_users_user_type?
+}
+
+model kesari_user_categories {
+  added_on         DateTime?
+  category_id      Int?
+  is_deleted       Int?      @default(0)
+  user_category_id Int       @default(autoincrement()) @id
+  user_id          Int?
+}
+
+model prj_attachments {
+  attachment_type String?
+  attach_id       Int       @id
+  company_id      Int?
+  customer_id     Int?
+  date_added      DateTime?
+  employee_id     Int?
+  file_ext        String?
+  file_name       String?
+  file_path       String?
+  project_id      Int?
+  task_id         Int?
+}
+
+model prj_clients {
+  client_address       String?
+  client_contact_email String?
+  client_contact_name  String?
+  client_details       String?
+  client_email         String?
+  client_GSTIN         String?
+  client_id            Int       @default(autoincrement()) @id
+  client_name          String?
+  client_PAN_no        String?
+  client_phone_no      String?
+  client_profile_link  String?
+  client_ref_by        String?
+  client_state_code    String?
+  client_state_name    String?
+  client_website       String?
+  company_id           Int?
+  date_added           DateTime?
+  date_modified        DateTime?
+  is_deleted           Boolean?  @default(false)
+}
+
+model prj_projects {
+  client_id        Int?
+  company_id       Int?
+  date_added       DateTime?
+  date_modified    DateTime?
+  project_currency String?
+  project_desc     String?
+  project_estimate Float?
+  project_id       Int       @default(autoincrement()) @id
+  project_name     String?
+  project_price    Float?
+  project_status   String?
+  ref_client_id    Int?
+}
+
+model prj_skills {
+  skill_id   Int     @default(autoincrement()) @id
+  skill_name String?
+}
+
+model prj_tasks {
+  checkin_id    Int?      @default(0)
+  company_id    Int?
+  date_added    DateTime?
+  date_modified DateTime?
+  dev_comments  String?
+  employee_id   Int?
+  project_id    Int?
+  task_date     DateTime?
+  task_desc     String?
+  task_id       Int       @default(autoincrement()) @id
+  task_name     String?
+  task_status   String?
+  task_time     Int?
+  worked_on     DateTime?
+}
+
+model tbl_admin {
+  admin_email    String?
+  admin_id       Int       @default(autoincrement()) @id
+  admin_pass     String?
+  date_added     DateTime  @default(now())
+  date_modified  DateTime  @default(now())
+  first_name     String?
+  is_deleted     Int?
+  last_logged_in DateTime?
+  last_name      String?
+  notes          String?
+}
+
+model tbl_companies {
+  company_address             String?
+  company_contact_email       String?
+  company_contact_name        String?
+  company_GSTIN               String?
+  company_id                  Int                           @default(autoincrement()) @id
+  company_logo                String?
+  company_name                String?
+  company_pan_no              String?
+  company_phone               String?
+  company_stamp               String?
+  company_state_code          String?
+  company_state_name          String?
+  company_swift_code          String?
+  company_website             String?
+  date_added                  DateTime?
+  date_modified               DateTime?
+  internal_notes              String?
+  is_deleted                  Int?
+  last_login                  DateTime?
+  login_password              String?
+  login_username              String?
+  primary_email               String?
+  hubstaff_activities         hubstaff_activities[]
+  hubstaff_crons              hubstaff_crons[]
+  hubstaff_daily_activity_org hubstaff_daily_activity_org[]
+  hubstaff_daily_activity_prj hubstaff_daily_activity_prj[]
+  hubstaff_organizations      hubstaff_organizations[]
+  hubstaff_projects           hubstaff_projects[]
+  hubstaff_screenshots        hubstaff_screenshots[]
+  hubstaff_tokens             hubstaff_tokens[]
+  hubstaff_tokens_admin       hubstaff_tokens_admin?
+  hubstaff_users              hubstaff_users[]
+}
+
+model tbl_daily_rates {
+  AUD        Float?
+  date_added String?
+  EUR        Float?
+  GBP        Float?
+  rate_id    Int     @default(autoincrement()) @id
+  USD        Float?
+  YEN        Float?
+}
+
+model tbl_session {
+  date_added      DateTime?
+  employee_id     Int?
+  session_id      String?
+  user_session_id Int       @default(autoincrement()) @id
+}
+
+enum kesari_designs_is_private_type {
+  all_vepari
+  by_category
+  vepari_selection
+}
+
+enum kesari_designs_status {
+  disable
+  enable
+}
+
+enum kesari_design_views_entity_type {
+  by_category
+  vepari_selection
+  color_selection
+}
+
+enum kesari_orders_order_status {
+  pending
+  dispatched
+  completed
+  canceled
+}
+
+enum kesari_users_user_type {
+  user
+  admin
+}
